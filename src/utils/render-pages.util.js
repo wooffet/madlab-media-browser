@@ -1,53 +1,48 @@
+import { Page } from "../renderer/renderer.js";
 const renderGetFilesPage = (items, getCurrentFolder, getZipQueue) => {
-    let html = `
-    <html>
-    <head>
-        <title>MadLab Media Browser</title>
-    </head>
-    <body>
-        <div>
+    const page = new Page()
+        .bootstrapPage()
+        .withTitle("MadLab Media Browser");
+
+    let headerContent = `
         <h1>Welcome to the MadLab Media Browser!</h1>
         <h2>Please make a zip request on folders before attempting to download them!</h2>
     `;
 
     if (getCurrentFolder) {
         const folder = getCurrentFolder();
-        html += `
+        headerContent += `
         <h3>Current folder: ${folder}</h3>
         `;
     } else {
-        html += `
+        headerContent += `
         <h3>Current folder: Home</h3>
         `;
     }
-    html += `
-        </div>
-        `;
 
     if (getZipQueue) {
         const queueItems = getZipQueue();
-        html += `
+        headerContent += `
         <div>
         <h3>Current zip request queue:</h3>
         <ul>
         `;
         queueItems.forEach((item) => {
-            html += `
+            headerContent += `
         <li>${item}</li>
         `;
         });
-        html += `
+        headerContent += `
         </ul>
         </div>
         `;
     }
 
-    html += `
-        <div>
-        `;
+    page.withHeaderContent(headerContent);
 
+    let content = "";
     items.forEach((item) => {
-        html += `
+        content += `
         <span>
         <p>${item.type}</p>
         <p><a href=${item.url}>${item.name}</a></p>
@@ -55,40 +50,26 @@ const renderGetFilesPage = (items, getCurrentFolder, getZipQueue) => {
         </span>
         `;
     });
-    html += `
-        </div>
-        </body>
-        </html>
-        `;
 
-    return html;
+    page.withContent(content);
+
+    return page.html;
 }
 
 const renderAddZipRequestPage = (renderMessage) => {
-    let html = `
-    <html>
-    <head>
-        <title>MadLab Media Browser</title>
-    </head>
-    <body>
-        <div>
+    const page = new Page()
+        .bootstrapPage()
+        .withTitle("MadLab Media Browser")
+        .withHeaderContent(`
         <h1>Add a zip request!</h1>
         <h2><a href="~/">Return to home page :)</a></h2>
-        </div>
-    `;
+        `)
+        .withContent(renderMessage());
 
-    html += `
-        <div>
-            ${renderMessage()}
-        </div>
-        </body>
-        </html>
-        `;
-
-    return html;
+    return page.html;
 }
 
-module.exports = {
+export {
     renderGetFilesPage,
     renderAddZipRequestPage
-}
+};

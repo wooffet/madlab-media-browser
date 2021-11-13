@@ -1,17 +1,19 @@
-const express = require("express");
-const controller = require("../controller/file.controller");
-const router = express.Router();
+import { Router } from "express";
+import { getFileList, downloadFile, getZipRequests, addZipRequest } from "../controller/file.controller.js";
+const router = Router();
 
 const initRoutes = (app) => {
-  router.get("/", controller.getFileList);
-  router.get("/files", controller.getFileList);
-  router.get("/files/:folder", controller.getFileList);
-  router.get("/file/:name", controller.downloadFile);
-  router.get("/file/:folder/:name", controller.downloadFile);
-  router.get("/ziprequests", controller.getZipRequests);
-  router.get("/zip/:folder", controller.addZipRequest);
+  router.get("/", getFileList);
+  router.get("/files", getFileList);
+  router.get("/files/:folder", getFileList);
+  router.get("/file/:name", downloadFile);
+  router.get("/file/:folder/:name", downloadFile);
+  router.get("/ziprequests", getZipRequests);
+  router.get("/zip/:folder", addZipRequest);
 
   app.use(router);
 };
 
-module.exports = initRoutes;
+export {
+  initRoutes
+};

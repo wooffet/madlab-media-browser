@@ -1,10 +1,8 @@
-const express = require("express");
-const initRoutes = require("./routes/index");
+import express, { urlencoded } from "express";
+import { initRoutes } from "./routes/index.js";
 const app = express();
 
-global.__sharedir = `C:\\Users\\loomy\\Dev\\`;
-
-app.use(express.urlencoded({ extended: true }));
+app.use(urlencoded({ extended: true }));
 
 initRoutes(app);
 

@@ -1,9 +1,10 @@
-const fs = require("fs");
-const { exec } = require("child_process");
-const EventEmitter = require("events");
-const { renderGetFilesPage, renderAddZipRequestPage } = require("../utils/render-pages.util");
+import { readdir, statSync } from "fs";
+import { exec } from "child_process";
+import { EventEmitter } from "events";
+import { renderGetFilesPage, renderAddZipRequestPage } from "../utils/render-pages.util.js";
 const bus = new EventEmitter();
 const baseUrl = "http://localhost:48080/";
+const __sharedir = `C:\\Users\\loomy\\Dev\\`;
 let zipRequests = [];
 let isProcessingZipRequest = false;
 
@@ -16,7 +17,7 @@ const getFileList = async (req, res) => {
     ? __sharedir + req.params.folder
     : __sharedir;
 
-  fs.readdir(requestedPath, (err, files) => {
+  readdir(requestedPath, (err, files) => {
     if (err) {
       res.status(500).send({
         message: "Unable to scan files!",
@@ -24,7 +25,7 @@ const getFileList = async (req, res) => {
     }
 
     if (req.params.folder) {
-      getCurrentFolder = () => { return __sharedDir + req.params.folder; };
+      getCurrentFolder = () => { return __sharedir + req.params.folder; };
     }
 
     if (isProcessingZipRequest) {
@@ -35,7 +36,7 @@ const getFileList = async (req, res) => {
       const fileUrl = encodeURIComponent(
         req.params.folder ? `${req.params.folder}/${file}` : file
       );
-      if (fs.statSync(requestedPath + "/" + file).isDirectory()) {
+      if (statSync(requestedPath + "/" + file).isDirectory()) {
         sharedFilesList.push({
           name: file,
           type: "Folder",
@@ -128,7 +129,7 @@ const completeZipRequest = (targetFolder) => {
   bus.emit("startNewZipRequest");
 };
 
-module.exports = {
+export {
   getFileList,
   downloadFile,
   getZipRequests,
