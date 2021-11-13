@@ -23,3 +23,11 @@
 - No need to add additional size to the request sent to any client browsers
 
  So instead, this project is creating the HTML of the pages and returning this to the client in it's response to any requests. I'm sure it could be using a templating engine (like Pug) instead, but that would also just be adding something to the project that I feel goes against my aims! Maybe I'm crazy, but tbh you are welcome to fork the project and add your own frontend if you wish ;)
+
+## TODO
+
+- Make shared folder value configurable instead of hardcoded
+- Split up the page rendering so the common parts of pages are called from generic functions instead of repeated in each rendering function
+- Add some actual styling instead of plain HTML
+- Only allow top-level folders to be added as a zip request
+- Don't add a zip request if the folder has already been zipped
