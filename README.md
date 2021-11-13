@@ -31,3 +31,4 @@
 - Add some actual styling instead of plain HTML
 - Only allow top-level folders to be added as a zip request
 - Don't add a zip request if the folder has already been zipped
+- Add links on home page to other locally hosted services
